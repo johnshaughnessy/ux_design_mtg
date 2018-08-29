@@ -27,3 +27,8 @@ Greg : Yea. There's one less degree of freedom though right because
 you have all of those on the Oculus Go controller but you're missing 
 one now on the Magic Leap.
 
+Kevin : Uh, without knowing the API, it could be pressure-sensitive.
+So like, it can differentiate that.
+If it's the way I expect it to be, it's like iOS, where you have haptic 
+push and press. Like it knows the difference between a press and a tap.
+
