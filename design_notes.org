@@ -30,7 +30,6 @@ If it's the way I expect it to be, it's like iOS, where you have haptic
 push and press. Like it knows the difference between a press and a tap.
 
 **** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/tap_or_press.mp4
-**** raw : https://www.jonicoma.com/ux_design_mtg/utterances/john_perspective_raw.mp4
 
 *** What should EVERY platform be able to do? How do we talk about those things?
 Kevin : The problem -- I agree -- I'm not saying we should back out 
@@ -81,6 +80,9 @@ Like I said, muting yourself already sucks.
 **** with 3DOF?
 **** with mouse/keyboard?
 **** with two 6DOF devices?
+
+** Full video recording
+*** raw : https://www.jonicoma.com/ux_design_mtg/utterances/john_perspective_raw.mp4
 ** Transcript
 Greg : Oh so um
 
