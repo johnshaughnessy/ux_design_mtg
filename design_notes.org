@@ -1,0 +1,1408 @@
+* Design Meeting 8/28/2018
+** TODO
+*** Two gaps in device support on 3DOF
+Greg: I guess if there's a strong motivating reason why this is not going to be 
+possible to support then we can see if we can find a way to come up with a design
+pattern for this stuff but like, I imagine there's two major gaps right now, to me.
+- You don't have the ability to scale and rotate on a subset of the device platforms.
+- We need a way to make simple changes to the pen tool on all of them so it's strictly
+like color and size.
+*** What should we do on 3DOF devices with no trigger (e.g. daydream)?
+Greg : Anyway, I guess my point was that... 
+We don't need to worry about [Magic Leap] right now.
+I was just throwing that out there as a fun little thing to worry about later.
+But we do need to figure out the trigger vs non-trigger case because the 
+daydream platform doesn't have a trigger, right?
+
+** Queries
+*** Magic Leap Controller API : Is the button pressure sensitive?
+Dom : It knows when you tap it or when you press it? That's different.
+
+John : I think ... 
+
+Greg : Yea. There's one less degree of freedom though right because 
+you have all of those on the Oculus Go controller but you're missing 
+one now on the Magic Leap.
+
+Kevin : Uh, without knowing the API, it could be pressure-sensitive.
+So like, it can differentiate that.
+If it's the way I expect it to be, it's like iOS, where you have haptic 
+push and press. Like it knows the difference between a press and a tap.
+
+**** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/john-you_can_still_click_it.mp4
+**** raw : https://www.jonicoma.com/ux_design_mtg/utterances/john_perspective_raw.mp4
+
+*** What should EVERY platform be able to do? How do we talk about those things?
+Kevin : The problem -- I agree -- I'm not saying we should back out 
+everything to a cursor. I'm just saying, we create a language that 
+every platform can basically speak in to interact with objects. 
+Whatever that form takes, that doesn't have to be the only way that 
+functionality gets used. It is just a common thing that everyone can do.
+**** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/kevin-a_common_thing.mp4
+
+*** Does the current input handling code meet our needs so far?
+**** Universal language or no need? Does muting suck?
+
+Kevin : The problem -- I agree -- I'm not saying we should back out 
+everything to a cursor. I'm just saying, we create a language that 
+every platform can basically speak in to interact with objects. 
+Whatever that form takes, that doesn't have to be the only way that 
+functionality gets used. It is just a common thing that everyone can do.
+
+Jim : Like, for me --
+
+Greg : I think I agree. I'm having a hard time coming up with concrete 
+examples of where that would result in different design decisions. 
+My understanding is that what we have out and what we want to have out in 
+the next couple weeks -- like my high level perspective is that we have 
+sufficient button mapping and metaphors in the current app to put stuff 
+into to like cover them.
+
+Dom : I think we have enough to have them do-able. I just think what we 
+have is already kind of bad and adding more to it is just getting worse.
+Like I said, muting yourself already sucks.
+
+***** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/is_input_good_right_now.mp4
+**** Multitasking with 3DOF is important.
+ Jim : That one you said about some subset of your controls maybe are 
+ turned off or limited. I think that's where I start having trouble because 
+ I start thinking about that like maybe when you're using a pen like 
+ you're standing still and just drawing but like. I know from other things 
+ people move, people want to be able to ratchet turn and draw and then 
+ ratchet turn back and talk. You don't want to end up in a place where 
+ now that I have pen I can't turn my body. Or like, that's just one 
+ example. A strawman example maybe. 
+ Or like, if I'm going to be playing a video, now I'm somehow going to 
+ have to change my position to the audience in order to advance it.
+***** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/jim-multitasking_is_good.mp4
+
+*** How do we change the state of the pen?
+**** Especially with 3DOF!
+*** How do manipulate 3D objects?
+**** with 3DOF?
+**** with mouse/keyboard?
+**** with two 6DOF devices?
+** Transcript
+Greg : Oh so um
+
+Dom : Oh it's also kind of, oh and also click on UI, same thing.
+
+Greg : oh and UI, 
+
+Dom : They're all overloaded on the same buttons. 
+
+Kevin : Something to note about the oculus go controller.
+We have up and down and center bound to the same thing.
+I tried binding up and down and center to different stuff.
+It's kind of not great because it's really easy to get false 
+positives on the center. So if you like .
+
+Dom : We can change the radius too -- to like the center or something like that.
+
+Kevin : It's almost impossible to reach the top without hitting center for example.
+
+Greg : Was that a recent change?
+
+Kevin : It was in there for a while.
+
+Greg : If I slide my thumb around the teleport thing will restart the animation.
+
+Greg: We have a few things to figure out.
+These 3DOF controllers are in a couple categories:
+- Ones that have a trigger
+- Ones that don't have a trigger
+And a third category, if you like:
+- Magic leap has a trigger and a non-depressable touchpad.
+ 
+Dom : Oh my god, are you serious?
+
+Greg : Yes
+
+Dom : Does it have a trigger though?
+
+John : You can still click it.
+
+Kevin : Nonono it's still clickable.
+
+John : It's just not depressing.
+
+Kevin : Yea. It's tapped.
+
+John : It knows when you tap it. It's not ...
+
+Dom : It knows when you tap it or when you press it? That's different.
+
+John : I think ... 
+
+Greg : Yea. There's one less degree of freedom though right because 
+you have all of those on the Oculus Go controller but you're missing 
+one now on the Magic Leap.
+
+Kevin : Uh, without knowing the API, it could be pressure-sensitive.
+So like, it can differentiate that.
+If it's the way I expect it to be, it's like iOS, where you have haptic 
+push and press. Like it knows the difference between a press and a tap.
+
+Dom (in despair) : Oh no, did I not charge my Oculus Go?
+
+Greg : Anyway, I guess my point was that... 
+We don't need to worry about [Magic Leap] right now.
+I was just throwing that out there as a fun little thing to worry about later.
+But we do need to figure out the trigger vs non-trigger case because the 
+daydream platform doesn't have a trigger, right?
+
+John : Yea.
+
+Kevin : That's correct.
+
+<Dom exits>
+
+Greg : Looks like we lost Dom.
+
+John : He didn't charge his Go, I think he'll probably just come back with his laptop in a second.
+
+Greg : Okay.
+It's weird I'm getting lower framerate now.
+I wonder what that's about.
+Anyway so, I think the carving point or whatever you want to call it -- why we 
+want to split [trigger vs non-trigger] up is the case that Kevin's worried about,
+with the "grab and release, but also then use" case.
+
+<Dom enters>
+
+Kevin : No it's just that we're trying to create more axes of freedom for the input
+on that controller. Ideally we want to have as many options as possible. So, 
+for that example ["grab and release, but also then use"], I wanted to use face buttons
+for changing color and changing size of the pen. Left-and-right work fine right now but 
+up-and-down really don't.
+Actually, I'm not even doing left and right because left-and-right is reserved for 
+rotating. So, you can press left-and-right and you'll ratchet turn. We can do 
+a tap on left-and-right, but we don't have a good way of knowing the difference 
+between a press and a tap.
+We could do a thing where if you press, then a tap won't register and if you tap 
+then you better not press or else it'll count as a press. But anyway, the point 
+was that we have very limited things we can do on that platform, especially 
+because one of the buttons is reserved for the browsers.
+
+Greg : You mean on daydream or ...?
+
+Kevin : I meant Oculus Go-- I haven't done anything on daydream.
+But on all the platforms, there's a menu button that is reserved.
+We have very limited input on Go or Daydream.
+
+Greg : The thing I'm talking about first is the [pickup-and-hold] interaction
+with the pen on 3DOF devices.
+
+Kevin : It works on Go and probably gear also (although I haven't tested it) 
+because the input is set up exactly the same way. You have a trigger and a 
+touchpad. I've introduced the concept that you have a [primary] and a [secondary]
+action. Both can pick up a thing, but only a [primary-release] can drop a thing 
+after that initial grab for the pen, for example. For [normal objects], they'll 
+act in exactly the same [as it they do now].
+So the idea is that for those platforms like the Oculus Go, the trigger is considered
+[secondary] and the touchpad is considered [primary]. So if you pick up a pen, 
+you can pick it up with either the trigger [secondary] or the touchpad [primary],
+draw with the trigger [secondary], and then drop it with the touchpad [primary].
+
+Greg : Ok, that makes sense.
+
+Kevin : And the pen is locked to your hand in that process. So when you pick it up
+with either, it'll stay attached to your hand until you press the touchpad [primary-release]
+(potentially for the second time).
+For [normal object] interaction, it does not do that. It just lets you pick it up 
+and drop it immediately.
+
+Greg : Right, it just doesn't stick to your hand, basically.
+
+<Jim enters>
+
+Greg : Oh hey, Jim
+Jim : What's up! I didn't want to interrupt.
+
+Greg : What are your thoughts [Kevin], on the way that you'll change the settings 
+on the pen. So you've picked up the pen, it's in your hand. You have no fingers 
+down on any of the buttons at this point. What's your method for changing size and
+color at this point?
+
+Kevin : So on 6DOF, e.g. on the vive, if you scroll up and down and get to the 
+max scroll distance or min scroll distance right now it changes color.
+So you can scroll the pen all the way to you and once you go "past" the minimum 
+distance it will just change color. Right now all that's doing is firing this 
+new event that says, "Hey you've scrolled". On the Vive also, if you swipe left 
+or right, it will change the scale. So it's just relying on [vertical] and [horizontal]
+scroll events, basically.
+
+Greg : Is that how you're imagining it'll work on the Oculus Go 3DOF controller? 
+You'll just touch across the surface of the scroll pad to change the state of the 
+pen (in terms of size and color)?
+
+Kevin : I haven't tried. Like I said the only thing I've done is allowing you to 
+change color by scrolling. I was not super confident on.... 
+Actually, in fact in the 6DOF case that scrolling only works on the left controller 
+because we use [left-and-right] on the right vive controller for ratchet-rotating.
+We don't have good way right now to differentiate between a push-down on the touchpad
+and a tap or swipe-push on the touchpad.
+Maybe now that I'm doing it on the scrolling, we'll be able to differentiate between
+ratchet rotating on push-down and changing pen size via swiping, but I want to avoid
+false positives where you change the scale of the pen while scrolling or vice versa.
+
+Greg : I see. But that is basically not an issue with the [overall model], it's 
+just an implementation detail that it's a little unclear whether we'll be able 
+to detect [that difference].
+
+Dom : I mean, it's still kind of a little bit overloading happening with that 
+functionality. There will be a technical challenge in detecting false positives 
+and that sort of stuff but also it just is a lot [of functionality] mapped onto 
+one thing. Admittedly, we don't have much choice on Oculus Go right -- a trigger 
+and a touchpad is all we have.
+
+Jim : I guess the question I have is that some apps that have drawing tools 
+or similar things will do something like, "click one of the face buttons" to 
+open up the menu that lets you pick colors, or change brush size. Is that 
+within the realm of possibilities for us? Do you guys think that is a good idea
+to eliminate some of the false positives?
+
+Dom : I feel like menus are inevitable for us. Let's think about our most 
+limited platform. We have one controller on Oculus Go. Actually, the most 
+limited platform is Daydream. We should really discuss if we're supporting 
+controllers without triggers or not.
+I don't see a way to get away with all the functionality we want to allow 
+without having some sort of menu system, whether it's just the pause thing or 
+some other kind of context menu that triggers when you lift the controller
+or something else.
+
+John : Yea I want to piggy-back on that and separate two kinds of concerns 
+that Kevin has brought up with the drawing stuff. When we have one button 
+on the daydream or a trigger and a touchpad on Oculus Go, one concern is 
+(as we said) we need to make maximum use of those limited inputs. You know 
+[swipe right] is recognized differently than [pressing down on the right side].
+That's one set of concerns, which is "Making the most of what limited buttons 
+you have."
+The second concern is that if we have 10 actions that we want to allow the user
+to perform, maybe we can get away with the way we're handling actions right now but 
+as soon that number of actions increases (and I think we're hitting this point 
+now for daydream and on Oculus Go) we're going to need to take these learnings 
+around action sets and different modes that you're operating in at any given 
+time and actually apply it to our app. Along those lines, like what Jim was 
+saying, I could see that menu or key sequence or whatever it is to change brush
+size or change color being how we introduce these concepts to Hubs.
+
+Jim : I brought it up thinking that Kevin has put a lot of work into the drawing
+tool and I wouldn't want us to limit how cool that tool could get because we 
+don't have enough buttons for it. Or that it might mess us ratchet turn or something.
+Like maybe if it's menu-driven then sure you can do all sorts of things like 
+"now it can do particles".
+
+Dom : I also want to have a framework for when we need to add something like this 
+we know how. Not just technically -- like whatever library we use. What is our 
+design language for talking about it? Right now we're just kind of randomly, 
+haphazardly deciding on this stuff as we create it like 
+- "Ok, we need to play and pause a video." 
+- "Ok, you can click on it to play it or pause it."
+ 
+- "Ok, we need to change the color"
+- "Ok, yea you scroll"
+We're just haphazardly adding these things.
+
+Jim : It's ad-hoc.
+
+Dom : Yea, and we need a way to... when we're going to add a new feature, it's 
+not even a question like we know. It's like 
+- "Ok we need to do X",
+- "Ok yea, that's obviously going to be in a menu because 'that's-how-we-do-
+features-like-X'"
+
+John : Yea piggy-backing off that I think we have enough ideas that have been 
+floated out in previous discussions to start prototyping an alternative input-
+handling scheme. I have some concerns with trying to make those changes. They're 
+not small changes because input ends up touching lots and lots of parts of the 
+app and it's really hard to say "Ok we're going to change how the cursor works"
+for example. The cursor interacts with a lot of things.
+But one question I have that we have yet to answer in our previous discussions 
+is, "What's the difference between an action set (which, we may have multiple 
+active at a time, like when you point at something that's scrollable your action
+sets change such that you have a scrolling action set in your active action sets),
+... What's the difference between an action set and key sequences? When I think 
+about something like emacs, so much of the versatility comes from the fact that 
+you can redefine a key sequence to mean some action in the app, and then you 
+can switch modes to activate those key sequences which are very analogous 
+to our action-set concepts. I don't think we've ever talked specifically about
+key-sequences which I think we can talk about interchangably with the way Dom's 
+been saying menus. Like, navigating a menu to select an action is essentially the 
+same thing as performing the right key sequence for that action.
+
+Dom : And the kinds of menus I'm envisioning are potentially like gesture-based 
+menus where you can learn a gesture-sequence. If you imagine a radial menu where 
+once you see it, you can then go [up], and then you go [left], and then you go 
+[down]. That motion of going [up]-[left]-[down] can become muscle memory and you 
+can perform actions without looking at the menu. That's the KIND of thing I'm 
+imagining.
+
+Greg : I'm having a hard time trying to figure out if now is the right time to 
+introduce this stuff. Given our current set of features, and the gaps in our 
+UX and the arrival of the pen tool, I don't feel that pain. I really feel like 
+the pen that Kevin has is introducing another form of modality in the app which 
+is namely that you're either holding it or you're not right, so if you're 
+holding it, now you're in a different mode, so we can actually remap a significant
+percentage of the controller while you're drawing. That gives us a bit of the 
+lever to stave off the need for like a wholistic UX for meta-controls. Don't 
+forget that we also have the pause mode, so like you said Dom there's a significant
+amount of these things that we'll be able to address using that metaphor we 
+already have. I want to make sure we don't --
+
+<Jim loads a model>
+
+Greg : oh--
+Jim : uh-- 
+Greg : It just dropped me out of VR, let me try to come back in.
+Jim : It's tiny and I can't see it. I wonder what...
+Greg : I just lost my hand but...
+Kevin : Nononah, sounds like 
+
+Greg: I guess if there's a strong motivating reason why this is not going to be 
+possible to support then we can see if we can find a way to come up with a design
+pattern for this stuff but like, I imagine there's two major gaps right now, to me.
+- You don't have the ability to scale and rotate on a subset of the device platforms.
+- We need a way to make simple changes to the pen tool on all of them so it's strictly
+like color and size.
+
+Dom : I mean I think there's still other things like we need to be able to control 
+the volume. Also the way we're playing and pausing videos right now is just completely
+broken and shitty. 
+
+Greg : How does it work right now?
+Dom : Right now you can click a video to play and pause it.
+But then that means when you pick it up to move it you also pause it. 
+It's just completely overloaded on that. There's no way to set volume 
+right now, but you're going to want a way to set volume. 
+
+Jim : What if it's a duplicate of the original video? Does it also pause all of them?
+Dom : No, right now they're treated as separate videos completely.
+
+Kevin : Ok so,
+
+Dom : PDF's have another concept added where there are these floating buttons on the 
+page to go to the [next] and [previous] pages, which is only shown to the owner. 
+These all work, they're just completely ad-hoc. Every single thing you want to interact
+with is a completely new modality to learn. It's just kind of weird. 
+
+Jim : That does kind of speak to the merits of coming up with a universal schema.
+
+Greg : Yea, I don't know whether these all fit under the same thing though right because 
+we're talking about a couple different concepts here so we have on-object interactions
+including things like paginating PDFs and [play][pause] and [volume] right? So we already
+have a metaphor for that, it's pause mode. That might not be the right UX because of things like
+slides.
+
+Dom : Right that's why I only show those buttons to the owner. 
+
+Greg : What I'm getting at though is that I don't know if there's any new universal design 
+language that we can both solve some of these issues and solve the issues we're also 
+talking about which is like 3D object interaction and then the tool controls. 
+
+Dom : The pen tool one sounds very related to the video controls / paging, all that stuff.
+That sounds very related. 3D object manipulation is maybe different, but I'm not sure.
+
+Kevin : So I think I've made pretty good strides for 3D object manipulation going on into
+the future. Once we get input mappings figured out (however the hell we're doing that with
+switching mapping or whatever, this will translate nicely), any object can be considered 
+an interactable in some way. We have no easy way to set state on that object based on the 
+input. So we can drive things like changing the color of the pen. Or changing volume on a 
+video. I don't think it's complicated. I don't think it's hard. 
+Now if we take a step back up, the problem is that we are very, very limited on input on 
+certain devices, and that's really where we break down right now. It's the hardest thing 
+that I've experienced where on certain devices it's just not possible to really get what 
+we want. 
+My gut says that the easiest way to work around that is to have menus or buttons that we 
+can press in VR or whatever to be able to do those action. Having tried the [Magic Leap]...
+Their creation app lets you spawn an object from a menu and you can drop it into the world
+and that object is going to have default behaviors e.g. whether it's going to respect 
+gravity or not. If you spawn a ball, the ball is just going to spawn in the area. If you 
+go back to that menu (you basically just have a trigger and a button that spawns a menu -
+that's it)... If you open that menu, and you're going to be given options to either go 
+into freeze mode --
+
+Jim: -- or delete mode --
+
+Kevin : Click on the freeze mode button, and now when you pick up that ball again, it'll
+just stay in place until you move it again. So that's one example. If you want to delete 
+something that's doing the same thing.
+
+Dom : I mean, they also have 6DOF input though, right? 
+
+Jim : One handed.
+
+Kevin : Uh,
+
+Dom : Yea one handed but that solves the position/rotation problem because you can 
+do that via [direct manipulation]. 
+
+Kevin : But I'm saying they only have the one trigger to actions basically and 
+then a button to open the menu.
+
+Greg : So they basically take a model where you pre-emptively tell it what you 
+want you next trigger action to do, as a verb, and then you do it, and repeat.
+
+Kevin : Right. Something similar we could consider for example (I'm not suggesting 
+we do this; it's just an idea) is that we could press a button, it pulls up 
+a menu of some sort, and then you select a rotation tool. Then when you click 
+on the next object, instead of your motion now moving the object, it's going 
+to rotate it based on some axes. 
+
+John : Yea I think what you're talking about is co-opting the visuals which 
+we have infinite freedom of expression with and like a pointer or swiping or 
+some action on the controller. Since we don't have a button on every action 
+we might have on the keyboard that the user wants to perform, we show the 
+user some stuff and then give them a nice way to indicate which of those 
+things they want to do. 
+
+Jim : So you're picturing -- so for example if I have this duck and it was 
+sitting out there like that, and I went into my little menu and I hit like 
+[rotate], now I can rotate it with my 3DOF controller's 3DOFs.
+
+Kevin : Scale would be like if you move your hand up when you're holding 
+the thing it gets bigger or something, whatever. IDK what that exactly 
+looks like but I think it's something we need to consider because we're 
+just going to have areas where we're going to have limited input --
+
+Jim : -- there's going to be more, too. Change the color of it, well I need
+a thing for that -- 
+
+Kevin : If we avoid going down this route of having [menus], it is nice in 
+that we don't have to deal with menus but I think we're going to have problems
+with people understanding what's available to them to be able to do, in 
+addition to people not being able to do things on certain platforms. If we
+do this we can have a universal (works on every platform) things the user 
+can do, and we can layer stuff on top of that (this is not prohibiting you 
+from, with 6DOF, just grabbing a thing and rotating it because obviously 
+you can do that, right), but like, that can just be layered on top of the 
+system. That way any system you know from any input device, you know that 
+you have this base level functionality you can do.
+
+John : Yea I'd go so far as to say the menu that's close to your person is
+equivalent to pointing at a thing and showing on-object interactions as 
+Greg said earlier. Those two are the same concept I think, which is, 
+"Show the user a thing and let them point at it or indicate it somehow"
+
+Jim : It's like a tool palette like in photoshop. I have the select tool 
+and now I'm selecting things.
+
+Dom : It's more akin to like the context menu right, it's more like 
+right-clicking something.
+
+Jim : Sure.
+
+Kevin : Well, however that works right. We either have to think about 
+what that menu means or where that menu is. I know Greg has concerns with 
+like going too far into the realm of what we had at Altspace where like 
+there's this radial where when you click on it all these other options 
+pop up and it's always there and there's a billion different things, but 
+then how do we make it context sensitive or how do we make it... Maybe this
+ties into state in the application so it knows that 
+"Oh, when you clicked on this object now you are in this object-interaction state 
+and we know if you push a certain button then it pulls up the menu or something.
+We have to figure out what that means."
+
+Jim : Right, and we have to figure out what that means. Do we highlight 
+objects to indicate what's active.
+
+Greg : We have a lot of stuff in here now and we already have some menu 
+concept which is the pause mode which was a way for us to hide 
+incidental complexity.
+
+Dom : Although we obviously need to work on the discoverability of that 
+because no one knows that you can delete objects and like I don't think 
+discoverability is necessarily the most important thing like I honestly 
+don't really care that much about 
+
+Jim : What if it's -
+
+Dom : - first time user experience as much as that's usually like, "Oh-
+
+Greg : Well actually the discoverability of the pause mode itself 
+was good from what I understand.
+
+Dom : Right, well people just didn't understand what it was for.
+
+Greg : That's a solvable problem though I think for sure. 
+What I'm saying is not really contradicting this, but what I'm getting at
+and the thing that gets me a little nervous is that the more steps 
+and the more layers of indirection we have for some of these fundamental
+things like scaling and moving, the more collatoral damage we'll cause 
+them unless we ensure there's a natural and intuitive interaction 
+that doesn't require these abstractions to get in the way because 
+a lot of this stuff is probably going to be about flow and people communicating 
+fluidly, and so I really like the model we have now because like 
+you can become a -- it's limited, right like I don't know how to scale
+for example on 3DOF but I know how to do the operations that I can 
+do pretty well and they're like really intuitive to me and like 
+they're muscle memory at this point. I can pick up that duck over 
+there and start tossing it around and moving it towards me and 
+placing it in a specific spot, pretty darn fluidly without thinking 
+about it now and I want us to be careful not to break that. 
+
+Dom : Yea, and I agree because even you look at some simple things
+like muting and unmuting yourself is very -- not that --. Uh, it's 
+a pain in the ass. It's an action where I have to like completely 
+stop what I'm doing, stop my train of thought, aim at the hud 
+think about it, click on it, say my thought, and then if I want to
+mute myself again I have to click on it again. And then I have to 
+do it again,
+
+Jim : And remember that the button is up there
+
+Dom : Contrast this with the way I mute myself when I use my laptop,
+I just have the [n key], I can just hit it, it's like on and off 
+I don't even have to think about it, and I'm literally just hitting
+it, as a [push to talk]. I'm just toggling it. 
+
+Greg : mhm
+
+Dom : That is not true of muting in hubs. That's my concern with 
+menus or on-object buttons or anything you put in the pause menu 
+is that like you completely break flow to go do those things. 
+
+Kevin : -Ok, let me reiterate 
+
+John : - yea
+
+Kevin : that I'm not suggesting that those be the only way of 
+doing things.
+
+Greg : Right, yea. I understand.
+
+Kevin : I'm saying we use that as a common base that everything use, but on
+other platforms where it makes sense and where it's possible we 
+allow the natural interactions.
+
+Jim : -- then you get, sort of superpowers like we do with two 
+hands.
+
+Kevin : Right. We kind of did this at Altspace. In the original version
+of the input system, everything backed out to using the cursor system.
+And it worked out really well because as long as we could translate the 
+actions to that cursor system, then the cursor system would allow any 
+one client to do everything the others could do. What it meant in that 
+was not great is that certain platforms couldn't do as much as you want 
+to. We didn't have a great way to give users superpowers (like Jim said)
+above and beyond what you could normally do. 
+Now I think we can design a system such that everyone has this base level 
+functionality that's easily accessible and you could hop from one platform
+to another...
+
+John : -- I kind of want to jump in here because I've been wanting to bring
+a similar thing up. It's interesting to me to hear you describe the system 
+at Altspace as a success in this regard because what I wanted to say was 
+that I want to avoid a situation where we default to a cursor interaction 
+and say the base level shared functionality is a cursor. The shared 
+interaction that anyone should be able to do is to see what's happening 
+and then you know how to go to the next step of what you want to do.
+But I think that pointing at something and pressing a button is a really
+weak paradigm where we could do better. Like indicating selection is 
+part of what that is when you're pointing at something, but it's not the 
+only way to indicate selection or intention or something. I want to really 
+steer clear of this modality that we got stuck in I think at Altspace where
+everything is --
+
+Dom : Yea and also I would make it clear that we didn't have not have a way
+to give you super powers, we were just didn't. We were lazy because we 
+had that crutch of being able to say, "Well it's fine it works on that platform
+it's just not that good." That was just how we implemented them.
+
+Kevin : I wouldn't pick that part out of the old system as what was successful.
+The thing I'm pointing out as successful was that all platforms could 
+do virtually everything. 
+
+Dom : Sure, but like at a cost of like -- 
+
+Jim : And, we went the other way --
+
+Kevin : The problem -- I agree -- I'm not saying we should back out 
+everything to a cursor. I'm just saying, we create a language that 
+every platform can basically speak in to interact with objects. 
+Whatever that form takes, that doesn't have to be the only way that 
+functionality gets used. It is just a common thing that everyone can do.
+
+Jim : Like, for me --
+
+Greg : I think I agree. I'm having a hard time coming up with concrete 
+examples of where that would result in different design decisions. 
+My understanding is that what we have out and what we want to have out in 
+the next couple weeks -- like my high level perspective is that we have 
+sufficient button mapping and metaphors in the current app to put stuff 
+into to like cover them.
+
+Dom : I think we have enough to have them do-able. I just think what we 
+have is already kind of bad and adding more to it is just getting worse.
+Like I said, muting yourself already sucks.
+
+Greg : That's what I think would be important for me. I have a hard time 
+thinking about these things in the abstract sense. I try to think through 
+like specific interactions that are broken or that are not going to be 
+possible to do because like we ran out of room --- I'm just having a hard 
+time -- like I said the things in my mind that we don't have that we need 
+is that we need to fix the gaps in the current object placement stuff and 
+then we need to figure out how the pen fits into this. And if you go through 
+the list -- if you ask me like I mean the one gap that I think we fall clearly
+very short on is that on daydream we don't have a trigger, and that basically
+blows the whole system up for both of these things. Like we lost just one 
+degree of freedom too far where we like can't do the things we care about 
+doing. I totally agree that like if there's more stuff that comes in that 
+we can't fit into the -- Like I was saying there's two modalities we have 
+already. There's the pause, and there's the pen modality where you can grab 
+and then hold a tool. So those are like pretty big surface areas for modality
+that we could probably use. So I think I'm not really sure I understand 
+what you guys are talking about beyond that, like there's a third way of 
+handling modality that we would need to enable the use cases but for example 
+like youtube playback controls, volume controls. Those all to me like 
+belong in the pause menu. The slide advancing is in there now I think 
+we should be ok but if not like John already had another idea where you 
+pick up an object, you have a clicker or something. Some subset of your 
+buttons are deactivated and you can click on it to advance the slides via 
+the tool or something. 
+So I'm just trying to understand where the gaps are.
+
+Jim : That one you said about some subset of your controls maybe are 
+turned off or limited. I think that's where I start having trouble because 
+I start thinking about that like maybe when you're using a pen like 
+you're standing still and just drawing but like. I know from other things 
+people move, people want to be able to ratchet turn and draw and then 
+ratchet turn back and talk. You don't want to end up in a place where 
+now that I have pen I can't turn my body. Or like, that's just one 
+example. A strawman example maybe. 
+Or like, if I'm going to be playing a video, now I'm somehow going to 
+have to change my position to the audience in order to advance it.
+
+Greg : Yea I want to know what the concrete examples are. Like the 
+concrete examples for the pen tool are -- you wouldn't lose ratchet 
+turning, what you'd lose is teleporting. On 3DOF controller on Go
+so like 
+
+Dom : Mmm
+
+Greg : If I'm holding the pen, I can draw by pulling the trigger. I 
+can drop by pressing the dpad. I can ratchet turn by pressing the 
+right and left sides of the dpad. I can change the state of the 
+pen by grazing my finger on the dpad up or grazing my finger on the 
+dpad right-and-left to change the size/color. But I can't teleport
+because now I'm drawing when I pull the trigger. That to me is a 
+gap, but I don't know how you solve that. 
+
+Kevin : Teleporting is not just trigger on Go. 
+
+Dom : Well, it is trigger and center button 
+
+Greg : Right, you also have two buttons so when you're holding the 
+pen, my understanding is that you lose the ability to teleport but 
+you lose the ability to ratchet turn. 
+
+Jim : Just holding the pen keeps you from teleporting?
+
+Dom : That sounds right. 
+
+Kevin : There is no switching between those two things just now. 
+I believe you can teleport if you're holding the pen. 
+
+Dom : But then you also drop the pen.
+
+Kevin : But then you also drop the pen. 
+
+Greg : I'm talking about the intended design- where we want to 
+end up. 
+
+Jim : When I draw, I often draw something here, and then I move 
+over here and then I draw something over here and then I'll 
+draw another part of it. You know. That greatly reduces the kind 
+of drawing you can do. 
+
+Greg : I'm just trying to understand concrete proposals for 
+alternatives. So for me that input model is like, that's the 
+tradeoff. It works. It works but you lose the teleporting. (I'm
+talking about Oculus Go 3DOF.) Right, you lose teleporting. 
+You can turn. You're stuck in place. You can draw. You can 
+change the state of the pen. I don't think there are any cases
+of false positives or unintentional actions that are 
+problematic. What's another alternative that we could talk through
+that would be better in certain tradeoffs or something. 
+
+Kevin : We talked about the up-down thing on the touchpad. 
+You could potentially make down, for example, what drops the 
+pen. 
+
+Dom : Right, and forward could be teleport for example. 
+
+Kevin : Maybe forward and center could be teleport. 
+
+Dom : But like, in order for that to work, you have to be 
+able to see a representation of the controller with the buttons,
+like with the virtual buttons on top of it. Like that's a method
+I've seen used on things where like, you see a representation of 
+the controller and like the virtual buttons change so like,
+there will be four buttons. One will be teleport one will be 
+drop pen. But you can literally "see your hand" and find out 
+what the virtual buttons are going to be. 
+
+Kevin : Well, what's annoying, I think, is that the natural thing
+that applications would use for all of this is the back button. 
+But we can't use that because of web vr. 
+
+Jim : What does that do in webvr? 
+
+Kevin : It just usually -- in Go for example it drops you back 
+into a scene with a 2D browser window showing the webpage. 
+
+Jim : Same with Dash in a way.
+
+Dom : Well, Dash has a menu. Usually there's a menu button and then
+-- Well, the problem is that with webvr we're two layers deep. 
+Dash takes the Oculus system button and the browser takes the back button. 
+Which is why we really only have two buttons. 
+
+Kevin : And which is why Daydream only has one button we can use. 
+
+Greg : Right I think if you want to dial it back to just the basic
+problem here is that when you're drawing you have two actions that 
+are fundamentally important. There's dropping the pen and then 
+there's drawing. You don't want to go to a menu to like draw a stroke 
+or something. So the drop action is the only other freedom you have to 
+like reduce its accessibility. 
+
+Dom : Yea like you could imagine shaking your hand violently to drop 
+the pen, for example. 
+
+Jim : I was going to ask if there are any modalities with the Go or 
+daydream where like turning your hand all the way over does something 
+different from -- you know when my hand is this way I'm in teleport 
+mode and then when I'm this way it's like, the pen. IDK I'm just 
+brain storming.
+
+Kevin : The problem is still with false positives like shake, in theory
+could work but --
+
+Jim : -- but if you're drawing a scribble that's not good.
+Maybe not while the button's down.
+I mean, I guess you have to try it. 
+
+Kevin : There's no model for us to follow so we're kind of just
+making it up uhhh experimenting in the process.
+
+John : I could imagine a system that works for daydream which 
+is sort of like you use the 3DOF or selection type activities 
+to point at videos or point at pens and pointing at people and
+things like this and then you reserve a [swipe down], and the 
+[swipe down] is always the beginning of a key sequence that, 
+once completed, changes what your primary button does. Like 
+the primary button might mean "draw" when you're holding a pen 
+and you're selecting the draw action and then you get to like 
+always start the next thing you want to do (if it's not [draw])
+with a down stroke. When you [down stroke] you have this 
+kind of radial menu or something like this where you're going 
+to change what the [primary button] on daydream - what pressing 
+it down means. I think that we don't have a good model in the 
+code for supporting something like that. It's hard to talk 
+about that without bringing up the code, but that's the kind 
+of problem that I'd like us to solve.
+
+Dom : Yea like there's a whole bunch of code problems so we 
+probably should avoid talking about them at first. I mean like 
+all of this, no matter what solution we come up with, is 
+going to be a complete nightmare to implement.
+
+Greg : *laughs*
+
+Dom : But I mean like ...
+
+Jim : That's already a given...
+
+Kevin : I like this idea, John of like having an action that cycles 
+the action you can do.
+
+Jim : yea
+
+Kevin : So there's this action you can do -- I hesitate to say it's 
+a [down-stroke] because of scrolling, so IDK how we would do that
+but say there's something else we could do that then for example on
+daydream let's say it's make a circle
+
+Jim : or double tap
+
+Kevin : to cycle the mode that you're in. 
+
+Dom : At that point like why not just have a menu so rather than
+cycling through I can do that thing I get a menu and then I tap 
+the top left corner, the top right corner, bottom left 
+and bottom right. Then I can select another mode.
+
+Jim : Can I raise a --- ?
+
+Greg : One thing that might help with carving back some of the ideas 
+is like -- my prior assumption is that the only two actions that 
+we can expect a user to take to get our of something don't want to 
+be in are either depressing the trigger or depressing the dpad. 
+So like any state that the user can get into where they can't escape
+via those two things - or to discover a path to get out of that 
+state via those two things - seems generally problematic because 
+most users will get stuck there.
+
+Jim : Can I point out something? So right now we think of teleport
+as a base function because that's how people with 3DOF get around. 
+We don't have it on desktop, at all, so that inconsistency has always
+been a little confusing to me. I know why it's there. I understand
+all that. But in talking about these tools you know like this marker
+this pen tool, some apps have done a thing where like you have a default 
+tool and that default tool is the teleporter. And so, that's discoverable
+unlike ours. In ours, right now, you have to know there's a button to hit 
+that is invisible. But if you had, by default, some tool and maybe it's 
+part of your hand or something - but the idea that I can teleport 
+because I have that tool. When I switch to marker, I don't have that 
+tool, so I can't do it. Then it becomes kind of obvious to the user 
+that like, oh I've got to switch back to my teleport tool to get around. 
+I think if we maybe start framing it that way, maybe it's another way to 
+say -- we can't do a default more like -- there's not way to show it.
+There's nothing to see. How do we know that's a default unless there's 
+a thing. 
+
+Greg : Mhm, that makes sense.
+
+Jim : So, I don't know. That could increase discoverability for teleporting
+in general and then when you're using some sort of tool (and there 
+will be more in terms of markers and whatever), maybe there's a remote 
+control which can control videos. and you have a play and a pause and a 
+scrub button. But like, I think that kind of makes it easier.
+
+Kevin : That brings up an intersting point which is that right now 
+the way you end interaction with the pen is by dropping the pen, but 
+with what Jim's talking about, you never actually dropped the pen you 
+just switch to a different tool. So by default you have a teleport tool 
+and that down action on the dpad is teleport. If you swipe right or left
+it switches you to the pen tool. That default action is the pen tool. 
+The default action is now drawing. 
+
+Jim : It would also -- just to point out really quick -- it would reduce 
+false positives on like, "Oops I didn't mean to teleport." because you can
+put the tool away.
+
+Dom : Though also you couldn't draw and move at the same time, which is...
+
+Jim : Correct. 
+
+Kevin : Well, those are the types of things we have to make conscious 
+decisions about but like, maybe that's ok. 
+
+Jim : because it's obvious.
+
+Kevin : Yea I... I think I've -- in that example I'd be ok not letting 
+people teleport or ratchet rotate while you were in the pen tool mode 
+or something. I think we can make it simple enough such that if they 
+want to do switch back, rotate, and then switch back they should do that.
+
+John : Can I just in and pre empt a concern that is possibly brewing in 
+Greg's mind which he mentioned earlier which is that the modes that 
+we've come up with so far like the input paradigm is pretty good for 
+a lot of platforms. And I think we're all in agreement (?) but I just 
+want to get a feel from the room that if that's a good way to interact 
+with the app, we can change the stuff that isn't working on different 
+platforms and make sure the UX is the same. You can still point at something
+and press a button and like click on it. We can retain the idea of 
+a click and things like this but I think in solving those things that 
+we haven't solved yet we shouldn't say like, "well we basically have 
+it solved let's just add one or two more things on top of it" I kind 
+of want to get down and fix some root issues.
+
+Dom : Yea I wouldn't... My read on it is that I wouldn't say anything we 
+have right now is good in terms of UX. I think it's all there and it's 
+all acceptable.
+
+Jim : Well it's good until we break it with something else. 
+
+Dom : Like I can do everything. The best one is 6DOF I think. Our best 
+one is two-handed 6DOF and even that is just like OK, I think. Like it's
+servicable. Like I don't find it delightful and I don't find it like..
+it's not serving all my needs in every way.
+
+Jim : Entertaining the idea of teleporting being a tool doesn't really 
+change the button or the mechanic at all. It's really more of a visual
+to help you understand it but it also services the addition of new 
+tools because now there's a clear metaphor for what that means.
+I'm thinking of like a game where you have a portal gun and if you 
+switched to the gravity gun you wouldn't expect that you can make portals.
+That sort of idea.
+
+John : Um... 
+
+Jim : That doesn't fundamentally change that you hit the a button to use 
+it when it's in your hand. 
+
+John : Yea I just um... your description of that reminded me of all those 
+apps where like you press a button to change what weapon you're holding 
+or whatever and then you perform a motion action either 6DOF or 3DOF to 
+do it.. and that's really similar to what we're talking about where like 
+scroll down or -- anyway I'm just going to skip forwad -- 
+What if when you scroll down it's essentially like the same button as 
+pause mode is. Like if you scroll down you're now "telling the computer
+you want to do something" instead of telling everyone in the room something.
+Like when you're drawing you're telling everyone in the room something.
+When you're acting on a video you're kind of setting that message out 
+to everyone. VS when you press pause you're like ok, computer show celery
+man or whatever. That's maybe... scrolling down... we can do a visual 
+treatment that's very generous to the user. Like it doesn't have to be 
+small and around your controller it could be like you're in talking-to-computer
+mode, fade everyone else out for a second until you select what tool you 
+want in your hand.
+
+Dom : Yea, and we have talked about (when we talked about pause menu
+really early on) we had talked about pause menu potentially being this 
+very ephemeral thing where like you could be in pause mode while holding 
+down trigger and then be out of pause mode when you release trigger. 
+That would be like this kind of thing. Ok computer is waiting for 
+input, ok do a thing and then you're out of it. Like I hit a thing, 
+hit delete, then I'm out of pause mode. And it's very obvious that I'm
+in this mode. Everything goes grayscale and it's wobbly. 
+
+Jim : It's like our loading screen. Kind of faded out in the background
+or something. There's a lot here to parse. It's kind of hard to settle 
+on something.
+
+Greg : Yea I mean I still feel like I'm stuck in the same place. Like 
+I don't know. Maybe I'm not thinking too far ahead. I just really think 
+like there's some tradeoffs in the current concepts. Ultimately the 
+controller target I have stuck in my mind (maybe because I'm using one 
+right now) is Oculus Go so we have two big buttons on the thing. Those 
+two big buttons are going to be the only two buttons that everyone learns
+how to use. Not everyone is going to learn how to click right and left. 
+Not everyone is going to learn how to do any gesturing. 
+
+Jim : Do we see the controller in your hand when you're in VR?
+
+Greg : No you just show your avatar hand.
+
+Dom : But we could, obviously. 
+
+Greg : I'm just trying to understand -- is there some planned 
+thing we have that will just blow all this stuff up? To me 
+there are a few potential failures like a pen tool with daydream,
+yea I don't know the answer to that one.
+
+Dom : Ok so like, how do I rotaaaaaaaa....
+
+<dom leaves>
+
+<dom returns> 
+ 
+Dom : I said how do I rotate, rotaaaaaaaa....
+
+John : Uh oh, Dom's going in and out.
+
+Kevin : "How do I rotate something in Oculus Go" 
+
+Greg : Right so um. Idk if this'll work but I was 
+kind of figuring on Oculus Go you would only have the ability to adjust
+what is it.
+the roll of the object?
+it wouldn't be the roll.
+it would be, wrapped around the cursor ray axis.
+
+Jim : This way ?
+
+Greg : No I mean like when you grab it, if you roll your controller
+you roll the object around the ray. Around the ray that you drew with the 
+cursor. 
+
+/////////////////////
+John's editor note
+/////////////////////
+-- This was a difficult portion to write everything down. I kept 
+mishearing / misremembering what was said as I played and transcribed.
+Need to use frequent pausing and lowering of the playback speed of the
+raw video. --
+/////////////////////
+
+Dom : Oh so I could point at it from above and spin it that way.
+
+Greg: Right so uh, I haven't. Idk if this will work but i thought on
+Oculus go you would only have the ability to roll the object. It wouldn't 
+be a roll it would be around the ray axis.
+
+Jim (simultaneous) : 
+Greg : It'd be a litte bit weird but you'd have the full 3DOF rotation
+by repositioning your avatar and your hand. When you grab it if you roll
+your controller you roll your object around the ray. Around the ray you
+drew with the cursor.
+
+Dom : And scale we'd do it at the edges
+
+Jim : Why wouldn't we do it the same way? I was just going to say wherever
+your pointer touches the object, that's the pivot 
+
+Greg : uh huh
+
+Jim : and that's the pivot and it scales from there. Because I actually -
+when I was playing with this duck earlier, I was realizing the thing that 
+bugs me about scale and that's so difficult especially when scaling 
+rectangular things is just... I'm holding it already it in one hand and 
+to scale it I have to grab it with the other hand and pull. And my brain
+is imagining that like it's - let's say it's rubber, right - that if I were 
+to grab it by the tail right now then the part that's in my right hand that 
+initially grabbed it would stay put. Now sometimes I can get it to do that 
+but 
+
+Greg : mhm
+
+Jim : I almost feel like the initial hand (or the cursor point) should be the 
+pivot. And like, that becomes the point of scale and point of reference. 
+
+Greg : Yea that makes sense.
+
+Kevin : That's not really an issue with our stuff that's really an issue 
+with superhands and how the -um
+
+Jim : I'm 
+
+Kevin : -um
+ 
+Jim : yea totally , I mean like I'm not saying that I don't understand 
+
+Dom : Yea like I mean it's technically all a nightmare it's like -- hahaha  
+
+Greg : ahhYea I mean like that makes sense Jim but agree like seems like 
+something we should try. I think Dom was asking about 3DOF.
+
+Jim : It would work on 3DOF as well I mean like pulling or just using your 
+
+Dom : Yea I was asking about 3DOF 
+
+Jim : I could grab it by the beak here and scale it away from the beak.
+Out from the beak. But I could also do that with my hand, and it would 
+feel the same. Or, with my pointer on 6DOF. 
+
+Greg : The one thing that came up when -- I think I was talking to Kevin --
+that might be a design flaw in the thing that we were talking about that
+we might be able to address (but we haven't tried it) is just umm. I was 
+kind of imagining that when you want to scale on 3DOF that you grab it 
+with the cursor and then if you scroll past a certain delta forward or 
+away you start scaling and I guess one of the things that came up was like
+if we only do it basically based on like the y'know if you're close you 
+lose the ability to scroll down and if you're far you lose the ability to 
+scroll up. You kind of lose the opportunity to reverse that scaling that you
+did, so it seems like maybe what you want to do is actually um... Is actually 
+make it so like once you enter past the threshold. You, then are permanently 
+scaling and then you release, or something. 
+
+Dom : Like I said I mean I think these things will work they just feel 
+so clunky. Like the functionality will be there you will technically be
+able to do these things. But like. Will you want to? Like I -- I don't know.
+
+Greg : Well so that's what I'm trying to understand so like -- the alternative
+
+Dom : That's what I'm saying like I don't know the right answer I don't - 
+I have no idea what that is. It just feels like--
+
+Greg : I don't disagree. I think that this is - not - perfect.
+
+Jim : The only reason you couldn't keep this on 3DOF and then have left
+and right scale up and down. Right now left and right is ratchet turn. 
+But like. Once I'm in grab-a-thing-mode. I mean. I could see that being 
+ok. 
+
+Dom : Then you can't turn while... Yea Idk.
+
+Jim : You're not using your teleport tool anymore so now you're. Now you're
+in.
+
+Greg : Wait so the bring-it-to-you and bring-it-further-from-you is not 
+clicking it's just rubbing your finger across the dpad.
+
+Dom : Yea that's
+
+Greg : Yea you could put scaling across the x. The only thing that um.
+
+Kevin : Well then what's rotation, right?
+Well I guess rotations done via "direct manipulation"
+
+Well here's the thing. We can't do this  -- We have to -- we don't have 
+to do this right now on for example daydream, but we could. Because now
+that the idea of toggleable objects is a thing, right now when you grab 
+a duck with a 3DOF - with any controller - it just stays. It stays grabbed
+as long as you're holding that button down.
+
+Greg : Yea right it could just be a toggle on daydream.
+
+Kevin : Right on daydream it could be a toggle. Now you have all those 
+things on global mode/actions. So swiping up and down. And swiping left and 
+right could do scaling.
+
+Greg : I guess we can try left and right scaling. I kind of assumed it 
+would be weird.
+
+Kevin : I mean since scale is done on one axis I think it would be fine.
+
+Greg : Yea the reason that we originally
+
+Jim : We don't allow non uniform scale anyway.
+
+Greg : Bring it to you and away from you feels like it's not idk like
+mis-doing it is not really that damaging. Because like the object retains
+its "form" as you do it, right. But if you have like a very error-prone 
+or accidental thing that changes the form of the object that might feel a 
+little bit heavy handed and like, painful to see happen if do it by mistake.
+
+Dom : We could just have a large zone and it could have like
+
+Kevin : I may be mistaken but I think that's actually how we did interactions
+on -- at altspace -- using -- the 3DOF controller because everything is toggleable
+on grab.
+
+Jim : Well how about just a filter where once you start in a direciton,
+only do that direction. Like, now  left and right don't work.
+
+Greg : Yea, you could do that. 
+
+Jim : While you're doing forward or back.
+
+Dom : Yea I think you probably want
+
+Greg : until you lift until you lift your finger off the dpad
+
+Dom : Right
+
+Jim : Yea 
+
+Greg : off the dpad
+
+Jim : Yea you wouldn't move it away from you while you were scaling it 
+because you started 
+
+Greg : Yea yea yea . The other thing I wasn't sure about daydream,
+Kevin, is, actually I think you're right that that would probably 
+solve this interaciton. The one that I'm still stuck on is the pen 
+drop vs draw. I think we basically just need to bite the bullet and 
+then, on daydream to drop the pen, you either have to -- it's in 
+HUD -- you have to turn it off in the HUD. Or like we have some 
+very very unintuitive thing like shaking or double clicking or 
+something to do a drop.
+
+Kevin : Ok well here's the thing actually The pen - we don't need 
+to scale the pen. We don't need to rotate the pen.
+
+Greg : No I mean for daydream how do we drop the pen. 
+
+Kevin : Oh I understand so drawing on the pen will just be 
+
+< brian enters >
+
+John : Hey Brian
+
+Kevin : -- will just be touching the touchpad. Clicking the touchpad
+you will drop the touchpad.
+
+
+
+
+
+Lost some stuff here.
+----- 
+Is there some planned thing that will blow 
+all this up. 
+
+Jim : Oh, so I could point at it 
+
+------------
+
+
+
+Greg : 
+Jim : Doesn't that seem error prone? I don't know how hard it is 
+to click that.
+
+Dom : I mean it's the primary action for everything else. Clicking 
+the thing is drawing.
+
+Kevin : Well I mean we don't have a trigger so what are we going 
+to do.
+
+Jim : Or like hold for more than a second and then drop it or something.
+
+Kevin : The thing is like we can't really... The whole cursor model 
+will have to change if you have to click on the UI.. You can't do that 
+while you're holding an object. 
+
+Greg : OOoooooh I see. Yea yea yea.
+
+Kevin : You'd be changing a lot of stuff down that route.
+And then what's nice about this too is that we don't need scale 
+and rotation for the pen. 
+
+Greg : I will throw it out there it's a little terrifying to consider 
+this could actually work in a pretty intuitive way. We could -- we could 
+perma-activate the cursor-ray if you're looking up at the HUD. And then
+you'd be able to. If we do still the pen on the hub then like, people will
+know how to label the pen.
+
+Brian : Hey sorry I didn't mean to interrupt but I'm just here to remind
+you that time has passed in real reality and it is now
+
+John : Yea in the interest of time should we like uh try to wrap up and 
+also decide where do we go from here like I know have this video and 
+I'd like to write up notes and uh possibly like kinda like capture some
+of the ideas we've shared but there are like technical details to work
+and but also the design stuff that's been proposed. Um... There are like
+short term goals was Greg's top level priorities like how do we allow
+scaling on the platforms that don't allow it and things like that.
+
+Kevin : The crappiest thing is that everything we talk about that we think
+could work is just going to be such a nightmare to make it work with the current
+input system. It's just really hard.
+
+Jim : Right
+
+Kevin : It's such a delicate balancing act... The way I have set up right
+now feels like a very delicate balancing act and every time I change something
+half a dozen other things break and like it's not great. So like, where do
+we even start in that case? We COULD just MAKE IT WORK with the current system.
+We could MAKE daydream more... the pen could... could in theory work with 
+this. But it's just going to be gross and like not really solve our root problems
+at all right?
+
+Dom : I mean, we'll have a pen tool.
+
+Kevin : I mean we WILL have a pen tool.
+
+Greg : What's the um.. what specific change are you talking about or 
+do you just think that. I feel like everything we co--
+
+Kevin  : (inaudible) The proposed solutions that we talked about would 
+be... kind of a pain in the ass to implement. Like 
+
+Greg : You mean how to get it to be droppable. 
+
+Kevin : Uhh.. Yea well so
+
+John : Kind of all of it. It doesn't work on daydream right now. I mean 
+it's not really a design challenge. I mean it is a design challenge. 
+It's the stuff we didn't talk about it which is like the technical reasons
+we didn't talk about here in this meeting.
+
+Greg : Yea yea 
+
+John : I mean I think we ought to make the things we made work on all 
+the platforms because that would kick the can down the road more but 
+I also want to actively work on the root problems so I don't -- I don't 
+I mean I want to do both. hah. I'm more interested in the root problems 
+because I think that'll solve... I think that's more important.
+
+Dom : I mean I think we have to do both but like... If... It is possible 
+to just complete what we have... now... first. And then... I don't know 
+when we cycle back and fix it because like. We've been pushing it.
+
+Greg : Yea i'm having a hard time not being in the code not knowing what 
+specific design deficiencies you're referring to and what can is being 
+kicked down what road. So I don't really know.
+
+Kevin : I'll give you a concrete example here right. I'll give you a concrete
+example like. To make the pen work in the way we described for daydream.
+Would require totally redoing how the input mapping is set up for the
+daydream controller. We just can't do it with the current input mapping 
+for the controller.
+
+Greg : Sorry, is this true for the oculus go controller too or just the daydream?
+
+Kevin : Go is going to be easier because it's still really close to 
+the existing model. Go will pretty much work. I just am really thinking 
+that Go will probably just work if I add the horizontal swiping.
+
+Greg : Yea I mean I don't care if we don't support drawing on the daydream headset 
+because no one uses it.
+
+Dom : The problem is that we have the HTC um...
+
+John : Mirage?
+
+Dom : Yea.
+
+Jim : How many people have that?
+
+Dom : Not many.
+
+Greg : That's not a change that --
+
+Dom : Aren't we specifically partnered with firefox reality in the htc focus?
+That has a trigger right? That's a different ... 
+
+Greg : That's like the same as the Go. IDK if it's a lot of work to add the 
+mapping but the design of it would work the same as go. 
+
+Kevin : The daydream solo
+
+Greg : Gear is the same too
+
+Kevin : The mirage solo... Does not have a trigger.
+
+Greg : Yea the Lenovo Mirage is what you're thinking of. And that's the 
+daydream platform one. 
+
+Kevin : Right. So we acknowledge that we're not -- for those -either of those
+platforms.
+
+Greg : I mean I don't personally care that much. I don't think.. If for 
+now there's no pen tool on daydream like. I'm not going to lose any 
+sleep because the platform we really care about is oculus go and then 
+ideally 
+
+Dom : I mean we should
+
+Jim : That helps. Everything we cut back a little bit helps right?
+
+Greg : I mean we have literally no users on daydream. If you look at our 
+data I think we have every week the odds are 1 in 2 that I have literally
+a single session on daydream. So like it's really low it's our worst platform.
+We do have a lot on Oculus Go but idk.
+
+Dom : Yea we don't have the daydream device so.
+
+Kevin : Ok so for that it's like 
+
+Dom : sharp inhale
+
+Kevin : --now adding rotate, translation, scale onto any object interaction
+using the go.. That probably is do-able but gets. Idk how hairy the code is
+going to look after doing that.
+
+Greg : Yea
+
+Kevin : Yea like it's going to add. It's going add more and more
+
+Dom : I mean I haven't fully looked at the pen tool yet but in terms of what
+you're already describing is kind of hairy. I mean adding that toggle funcitonality
+and the scrolling and all that sort of stuff.
+
+Kevin : I think the code is ... It's just going to be... it's still gross.
+It's not anywhere near where we want it.
+
+John : Ok I'm going to step out. Thanks for this meeting guys. I think 
+it was actually pretty helpful. I'm going to try to make some kind of 
+document to describe what concerns we've brought up.
+
+Jim : Thank you.
+
+Greg : Thanks
+
+Dom : Yea and I'm up for talking more tomorrow if we want to continue this.
+Idk how useful it's going to be but we can maybe after we read through 
+the notes we can try to -- I think we we have to be a little more concrete.
+This was just too painful a space to...
+
+Kevin : Yea I'm not sure what exactly the output or the actionable items 
+are right now.
+
+John : Right yea I'm actually going to try really hard to capture the 
+thoughts in a way that we can act on. I don't think that's easy because 
+of how many concerns we have, but I'm going to spend basically the 
+rest of the day on it.
+
+Greg : Ok, that sounds great.
+
+John : Ok, see you guys.
+
+Greg : Alright thanks man.
+
+
