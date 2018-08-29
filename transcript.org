@@ -7,10 +7,10 @@ And a third category, if you like:
 - Magic leap has a trigger and a non-depressable touchpad.
 *** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/greg-we_have_a_few_things_to_figure_out.mp4
 *** raw : https://www.jonicoma.com/ux_design_mtg/utterances/john_perspective_raw.mp4
-** 
+** Dom : Oh my god, are you serious?
+*** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/dom-omg_are_you_serious.mp4
+*** raw : https://www.jonicoma.com/ux_design_mtg/utterances/john_perspective_raw.mp4
 * rest
- 
-Dom : Oh my god, are you serious?
 
 Greg : Yes
 
