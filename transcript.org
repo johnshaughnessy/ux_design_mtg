@@ -1,0 +1,6 @@
+Greg: We have a few things to figure out.
+These 3DOF controllers are in a couple categories:
+- Ones that have a trigger
+- Ones that don't have a trigger
+And a third category, if you like:
+- Magic leap has a trigger and a non-depressable touchpad.
