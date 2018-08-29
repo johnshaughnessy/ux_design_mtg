@@ -1,5 +1,5 @@
 * Design Meeting 8/28/2018
-** TODO
+** Action items
 *** Two gaps in device support on 3DOF
 Greg: I guess if there's a strong motivating reason why this is not going to be 
 possible to support then we can see if we can find a way to come up with a design
@@ -29,7 +29,7 @@ So like, it can differentiate that.
 If it's the way I expect it to be, it's like iOS, where you have haptic 
 push and press. Like it knows the difference between a press and a tap.
 
-**** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/john-you_can_still_click_it.mp4
+**** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/tap_or_press.mp4
 **** raw : https://www.jonicoma.com/ux_design_mtg/utterances/john_perspective_raw.mp4
 
 *** What should EVERY platform be able to do? How do we talk about those things?
@@ -42,7 +42,7 @@ functionality gets used. It is just a common thing that everyone can do.
 
 *** Does the current input handling code meet our needs so far?
 **** Universal language or no need? Does muting suck?
-
+     
 Kevin : The problem -- I agree -- I'm not saying we should back out 
 everything to a cursor. I'm just saying, we create a language that 
 every platform can basically speak in to interact with objects. 
@@ -74,8 +74,7 @@ Like I said, muting yourself already sucks.
  example. A strawman example maybe. 
  Or like, if I'm going to be playing a video, now I'm somehow going to 
  have to change my position to the audience in order to advance it.
-***** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/jim-multitasking_is_good.mp4
-
+***** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/jim-multitasking_is_important_3DOF.mp4
 *** How do we change the state of the pen?
 **** Especially with 3DOF!
 *** How do manipulate 3D objects?
