@@ -23,3 +23,7 @@ John : It knows when you tap it. It's not ...
 
 Dom : It knows when you tap it or when you press it? That's different.
 
+Greg : Yea. There's one less degree of freedom though right because 
+you have all of those on the Oculus Go controller but you're missing 
+one now on the Magic Leap.
+
