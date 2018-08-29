@@ -13,11 +13,10 @@ And a third category, if you like:
 ** Greg : Yes
 *** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/greg-yes.mp4
 *** raw : https://www.jonicoma.com/ux_design_mtg/utterances/john_perspective_raw.mp4
+** Dom : Does it have a trigger though?
+*** utterance : https://www.jonicoma.com/ux_design_mtg/utterances/dom-does_it_have_a_trigger.mp4
+*** raw : https://www.jonicoma.com/ux_design_mtg/utterances/john_perspective_raw.mp4
 * rest
-
-
-Dom : Does it have a trigger though?
-
 John : You can still click it.
 
 Kevin : Nonono it's still clickable.
