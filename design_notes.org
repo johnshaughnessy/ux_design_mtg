@@ -13,6 +13,14 @@ We don't need to worry about [Magic Leap] right now.
 I was just throwing that out there as a fun little thing to worry about later.
 But we do need to figure out the trigger vs non-trigger case because the 
 daydream platform doesn't have a trigger, right?
+*** What, if anything, needs to change with the way we handle input?
+Greg asked for examples of two things. The first is for specific cases
+where the way our current input handling is designed that break down 
+(e.g. on Daydream we
+can't modify the state of the pen with our current design).
+The second is a specific proposal for an alternative or change to 
+the way we handle input that would solve those problems in the first 
+set of examples or has some beneficial tradeoff we would like to make.
 
 ** Queries
 *** Magic Leap Controller API : Is the button pressure sensitive?
