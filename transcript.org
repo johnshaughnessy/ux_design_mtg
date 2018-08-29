@@ -10,3 +10,5 @@ Dom : Oh my god, are you serious?
 Greg : Yes
 
 Dom : Does it have a trigger though?
+
+John : You can still click it.
